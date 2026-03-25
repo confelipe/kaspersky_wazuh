@@ -1,0 +1,65 @@
+<decoder name="kaspersky-cloud-base">
+  <prematch>event@23668</prematch>
+</decoder>
+
+<!-- HOST STATUS: WARNING / CRITICAL / INFO / qualquer outro status no mesmo padrão -->
+<decoder name="kaspersky-cloud-host-status">
+  <parent>kaspersky-cloud-base</parent>
+  <prematch>KLSRV_HOST_STATUS_</prematch>
+  <regex type="pcre2">p1="Status of device '([^']+)' has changed to ([^:]+): ([^"]+)"\s+et="(KLSRV_HOST_STATUS_[^"]+)"\s+etdn="([^"]+)"\s+hdn="([^"]*)"\s+hip="([^"]*)"\s+gn="([^"]*)"\s+kscfqdn="([^"]*)"</regex>
+  <order>device_name,device_status,status_reason,event_name,event_description,server_name,server_ip,group_name,ksc_fqdn</order>
+</decoder>
+
+<!-- HOST NOT VISIBLE -->
+<decoder name="kaspersky-cloud-host-not-visible">
+  <parent>kaspersky-cloud-base</parent>
+  <prematch>KLSRV_EVENT_HOSTS_NOT_VISIBLE</prematch>
+  <regex type="pcre2">p1="([^"]*)"\s+p2="([^"]*)"\s+et="(KLSRV_EVENT_HOSTS_NOT_VISIBLE)"\s+etdn="([^"]+)"(?:\s+hdn="([^"]*)"\s+hip="([^"]*)"\s+gn="([^"]*)"\s+kscfqdn="([^"]*)")?</regex>
+  <order>device_name,days_not_visible,event_name,event_description,server_name,server_ip,group_name,ksc_fqdn</order>
+</decoder>
+
+<!-- SERVER CONNECT -->
+<decoder name="kaspersky-cloud-serverconnect">
+  <parent>kaspersky-cloud-base</parent>
+  <prematch>KLAUD_EV_SERVERCONNECT</prematch>
+  <regex type="pcre2">p2="([^"]*)"\s+p3="([^"]*)"\s+p5="([^"]*)"\s+p9="([^"]*)"\s+et="(KLAUD_EV_SERVERCONNECT)"\s+etdn="([^"]+)"\s+hdn="([^"]*)"\s+hip="([^"]*)"\s+gn="([^"]*)"\s+kscfqdn="([^"]*)"</regex>
+  <order>src_ip,user_name,src_ip_alt,client_ip,event_name,event_description,server_name,server_ip,group_name,ksc_fqdn</order>
+</decoder>
+
+<!-- SIEM TEST SUCCESS -->
+<decoder name="kaspersky-cloud-siem-test-success">
+  <parent>kaspersky-cloud-base</parent>
+  <prematch>KLAUD_EV_SIEM_TEST_SUCCESS</prematch>
+  <regex type="pcre2">p2="([^"]*)"\s+p3="([^"]*)"\s+p5="([^"]*)"\s+p9="([^"]*)"\s+et="(KLAUD_EV_SIEM_TEST_SUCCESS)"\s+etdn="([^"]+)"\s+hdn="([^"]*)"\s+hip="([^"]*)"\s+gn="([^"]*)"\s+kscfqdn="([^"]*)"</regex>
+  <order>siem_target,user_id,siem_target_alt,client_ip,event_name,event_description,server_name,server_ip,group_name,ksc_fqdn</order>
+</decoder>
+
+<!-- OBJECT MODIFY -->
+<decoder name="kaspersky-cloud-objectmodify">
+  <parent>kaspersky-cloud-base</parent>
+  <prematch>KLAUD_EV_OBJECTMODIFY</prematch>
+  <regex type="pcre2">p3="([^"]*)"\s+p9="([^"]*)"\s+et="(KLAUD_EV_OBJECTMODIFY)"\s+etdn="([^"]+)"\s+hdn="([^"]*)"\s+hip="([^"]*)"\s+gn="([^"]*)"\s+kscfqdn="([^"]*)"</regex>
+  <order>user_id,client_ip,event_name,event_description,server_name,server_ip,group_name,ksc_fqdn</order>
+</decoder>
+
+<!-- TEST SIEM SHORT -->
+<decoder name="kaspersky-cloud-test-siem-short">
+  <parent>kaspersky-cloud-base</parent>
+  <prematch>TEST_SIEM_CONNECTION</prematch>
+  <regex type="pcre2">et="(TEST_SIEM_CONNECTION)"\s+etdn="([^"]+)"</regex>
+  <order>event_name,event_description</order>
+</decoder>
+
+<!-- FALLBACK 1: novo evento com contexto completo -->
+<decoder name="kaspersky-cloud-generic-full">
+  <parent>kaspersky-cloud-base</parent>
+  <regex type="pcre2">et="([^"]+)"\s+etdn="([^"]+)"\s+hdn="([^"]*)"\s+hip="([^"]*)"\s+gn="([^"]*)"\s+kscfqdn="([^"]*)"</regex>
+  <order>event_name,event_description,server_name,server_ip,group_name,ksc_fqdn</order>
+</decoder>
+
+<!-- FALLBACK 2: novo evento só com et/etdn -->
+<decoder name="kaspersky-cloud-generic-minimal">
+  <parent>kaspersky-cloud-base</parent>
+  <regex type="pcre2">et="([^"]+)"\s+etdn="([^"]+)"</regex>
+  <order>event_name,event_description</order>
+</decoder>
