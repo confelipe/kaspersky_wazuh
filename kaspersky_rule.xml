@@ -1,0 +1,63 @@
+<group name="kaspersky,kaspersky_cloud,endpoint,threat_hunting,">
+
+  <rule id="110000" level="3">
+    <decoded_as>kaspersky-cloud-base</decoded_as>
+    <description>Kaspersky Cloud event detected</description>
+    <group>kaspersky,kaspersky_cloud,endpoint,threat_hunting,</group>
+  </rule>
+
+  <rule id="110001" level="3">
+    <field name="event_name">^TEST_SIEM_CONNECTION$</field>
+    <description>Kaspersky Cloud - SIEM connection test started</description>
+    <group>kaspersky,kaspersky_cloud,endpoint,threat_hunting,configuration,audit,siem_test,</group>
+  </rule>
+
+  <rule id="110002" level="4">
+    <field name="event_name">^KLAUD_EV_SIEM_TEST_SUCCESS$</field>
+    <description>Kaspersky Cloud - SIEM connection test succeeded</description>
+    <group>kaspersky,kaspersky_cloud,endpoint,threat_hunting,configuration,audit,siem_test,</group>
+  </rule>
+
+  <rule id="110003" level="5">
+    <field name="event_name">^KLAUD_EV_OBJECTMODIFY$</field>
+    <description>Kaspersky Cloud - Object modified</description>
+    <group>kaspersky,kaspersky_cloud,endpoint,threat_hunting,configuration_change,audit,admin_activity,</group>
+  </rule>
+
+  <rule id="110004" level="4">
+    <field name="event_name">^KLAUD_EV_SERVERCONNECT$</field>
+    <description>Kaspersky Cloud - User connected to Administration Server</description>
+    <group>kaspersky,kaspersky_cloud,endpoint,threat_hunting,authentication_success,audit,admin_activity,</group>
+  </rule>
+
+  <rule id="110005" level="7">
+    <field name="event_name">^KLSRV_HOST_STATUS_WARNING$</field>
+    <description>Kaspersky Cloud - Device status warning</description>
+    <group>kaspersky,kaspersky_cloud,endpoint,threat_hunting,endpoint_health,warning,</group>
+  </rule>
+
+  <rule id="110006" level="10">
+    <field name="event_name">^KLSRV_HOST_STATUS_CRITICAL$</field>
+    <description>Kaspersky Cloud - Device status critical</description>
+    <group>kaspersky,kaspersky_cloud,endpoint,threat_hunting,endpoint_health,malware,critical,</group>
+  </rule>
+
+  <rule id="110007" level="6">
+    <field name="event_name">^KLSRV_EVENT_HOSTS_NOT_VISIBLE$</field>
+    <description>Kaspersky Cloud - Device not visible</description>
+    <group>kaspersky,kaspersky_cloud,endpoint,threat_hunting,availability,endpoint_health,visibility,</group>
+  </rule>
+
+  <rule id="110008" level="3">
+    <field name="event_name">^KLSRV_HOST_STATUS_INFO$</field>
+    <description>Kaspersky Cloud - Device status info</description>
+    <group>kaspersky,kaspersky_cloud,endpoint,threat_hunting,endpoint_health,info,</group>
+  </rule>
+
+  <rule id="110099" level="3">
+    <if_sid>110000</if_sid>
+    <description>Kaspersky Cloud - Generic event</description>
+    <group>kaspersky,kaspersky_cloud,endpoint,threat_hunting,kaspersky_cloud_generic,</group>
+  </rule>
+
+</group>
